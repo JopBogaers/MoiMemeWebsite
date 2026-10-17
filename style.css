@@ -207,7 +207,7 @@ body {
 .panel p {
     max-width: none;
     margin: 0 clamp(1rem, 4vw, 3rem);
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     line-height: 1.7;
     color: var(--text-color);
     transition: color 800ms ease;
@@ -219,7 +219,8 @@ body {
     margin: 2rem clamp(1rem, 4vw, 3rem) 0;
 }
 
-#section-4 p a {
+#section-4 p a,
+#section-5 p a {
     color: var(--text-color);
     text-decoration: underline;
     transition: color 800ms ease;
@@ -228,7 +229,7 @@ body {
 .shows-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) clamp(150px, 25%, 280px);
-    align-items: start;
+    align-items: stretch;
     gap: clamp(1rem, 4vw, 3rem);
     margin: 0 clamp(1rem, 4vw, 3rem);
 }
@@ -237,11 +238,35 @@ body {
     margin: 0 0 1rem;
 }
 
+@media (min-width: 601px) {
+    .shows-copy h2,
+    #section-3 > h2 {
+        padding-left: 0.4rem;
+    }
+}
+
 .shows-copy p {
     margin: 0;
 }
 
+.bandsintown-widget-wrap {
+    width: 100%;
+    margin: 1.5rem 0 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.bandsintown-status {
+    margin: 1.5rem 0 0 !important;
+}
+
+.bandsintown-widget-wrap .bit-play-my-city-wrapper {
+    display: none !important;
+}
+
 .show-video-column {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     max-width: 280px;
     margin-left: auto;
@@ -250,18 +275,67 @@ body {
 .show-video-frame {
     position: relative;
     width: 100%;
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 9/16;
     overflow: hidden;
     border-radius: 12px;
 }
 
-.image-caption {
-    margin: 0.5rem 0 0;
-    text-align: center;
-    font-size: 0.85rem;
-    line-height: 1.3;
-    color: var(--text-color);
-    transition: color 800ms ease;
+.show-gallery {
+    flex: 1 0 320px;
+    min-height: 320px;
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.show-gallery-track {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-50%);
+    animation: show-gallery-down 70s linear infinite;
+}
+
+.show-gallery:hover .show-gallery-track,
+.show-gallery:focus-within .show-gallery-track {
+    animation-play-state: paused;
+}
+
+.show-gallery-set {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 50%;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+.show-gallery-item {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.show-gallery-item > img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.show-gallery-item .media-credit {
+    margin-top: 0.35rem;
+}
+
+@keyframes show-gallery-down {
+    from {
+        transform: translateY(-50%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.band-image-credit {
+    width: 60%;
+    margin: 2rem auto 0;
 }
 
 video {
@@ -279,6 +353,16 @@ video {
     margin: 0;
     border-radius: 12px;
     object-fit: cover;
+
+    -webkit-mask-image:url(media/vidMask.png);
+    -webkit-mask-position:center center;
+    -webkit-mask-repeat:no-repeat;
+    -webkit-mask-size:cover;
+  
+    mask-image:url(media/vidMask.png);
+    mask-position:center center;
+    mask-repeat:no-repeat;
+    mask-size:cover;
 }
 
 .mask1  {
@@ -291,16 +375,6 @@ video {
     mask-position:center center;
     mask-repeat:no-repeat;
     mask-size:cover;
-}
-
-.video-overlay {
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    pointer-events: none;
 }
 
 .video-audio-toggle {
@@ -328,8 +402,46 @@ video {
         max-width: none;
     }
 
-    .shows-copy h2 {
-        font-size: clamp(1.7rem, 8vw, 3rem);
+    .bandsintown-widget-wrap .bit-widget,
+    .bandsintown-widget-wrap .bit-follow-section-wrapper,
+    .bandsintown-widget-wrap .bit-nav-bar-container,
+    .bandsintown-widget-wrap .bit-nav-bar,
+    .bandsintown-widget-wrap .bit-event-lists,
+    .bandsintown-widget-wrap .bit-events-container,
+    .bandsintown-widget-wrap .bit-upcoming-events-container,
+    .bandsintown-widget-wrap .bit-past-events {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .bandsintown-widget-wrap .bit-widget,
+    .bandsintown-widget-wrap .bit-widget * {
+        font-size: clamp(0.72rem, 3.2vw, 0.9rem) !important;
+    }
+
+    .bandsintown-widget-wrap .bit-event,
+    .bandsintown-widget-wrap .bit-details-inner-wrapper {
+        min-width: 0 !important;
+    }
+
+    .bandsintown-widget-wrap .bit-past-events {
+        position: relative;
+        left: -10px;
+    }
+
+    .bandsintown-widget-wrap .bit-event {
+        width: 100% !important;
+    }
+
+    .bandsintown-widget-wrap .bit-logo-link svg {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .bandsintown-widget-wrap .bit-location-under-mobile,
+    .bandsintown-widget-wrap .bit-venue {
+        overflow-wrap: anywhere;
     }
 }
 
@@ -339,9 +451,84 @@ img {
 
 .band-image {
     display: block;
-    width: 60%;
+    width: 100%;
     max-width: none;
     height: auto;
-    margin: 2rem auto 0;
+    margin: 0;
+}
+
+.band-image1 {
+    display: block;
+    width: 50%;
+    max-width: none;
+    height: auto;
+    margin: 0 auto;
+}
+
+.media-credit {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: fit-content;
+    max-width: 38px;
+    height: 38px;
+    margin: 0.65rem auto 0;
+    padding: 4px 6px;
+    gap: 0;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #f7f6f0;
+    color: #302117;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: max-width 300ms ease, gap 300ms ease, padding 300ms ease;
+}
+
+.show-video-column > .media-credit {
+    margin-top: 0.01rem;
+}
+
+.media-credit > img {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.media-credit-label {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    font-size: 0.9rem;
+    transition: max-width 300ms ease, opacity 200ms ease;
+}
+
+.media-credit:hover,
+.media-credit:focus-visible {
+    max-width: 240px;
+    padding-right: 14px;
+    gap: 8px;
+}
+
+.media-credit:hover .media-credit-label,
+.media-credit:focus-visible .media-credit-label {
+    max-width: 180px;
+    opacity: 1;
+}
+
+.media-credit:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .media-credit,
+    .media-credit-label {
+        transition: none;
+    }
+
+    .show-gallery-track {
+        transform: none;
+        animation: none;
+    }
 }
 
