@@ -283,7 +283,7 @@ body {
 .show-gallery {
     flex: 1 0 320px;
     min-height: 320px;
-    margin-top: 1rem;
+    margin-top: 0.2rem;
     overflow: hidden;
 }
 
@@ -303,7 +303,7 @@ body {
     display: flex;
     flex-direction: column;
     flex: 0 0 50%;
-    gap: 1rem;
+    gap: 1.3rem;
     padding-bottom: 1rem;
 }
 
@@ -320,7 +320,7 @@ body {
 }
 
 .show-gallery-item .media-credit {
-    margin-top: 0.35rem;
+    margin-top: 0.05rem;
 }
 
 @keyframes show-gallery-down {
@@ -485,7 +485,7 @@ img {
 }
 
 .show-video-column > .media-credit {
-    margin-top: 0.01rem;
+    margin-top: -1rem;
 }
 
 .media-credit > img {
