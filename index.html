@@ -309,6 +309,43 @@
             <section id="section-3" class="panel">
                 <h2>Music</h2>
                 <p>January 15th, we will release our debut EP called "This World Is a Scary Place". More information on the release will be available in this section soon. To get a taste of the release, you can listen to the singles here.</p>
+                <div class="music-release-artwork">
+                    <h3>This World Is a Scary Place</h3>
+                    <img src="media/TWIASPalbart.jpg" alt="This World Is a Scary Place album artwork">
+                    <p id="demo"></p>
+                </div>
+
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Jan 15, 2027 00:00:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + " days " + hours + " hours "
+  + minutes + " minutes " + seconds + " seconds ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "OUT NOW!";
+  }
+}, 1000);
+</script>
+
                 <iframe class="spotify-embed" data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/2YKL2TjNycTb8bofngDDtV?utm_source=generator&si=e1d21c9e34904a20" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </section>
             <section id="section-4" class="panel">

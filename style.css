@@ -213,6 +213,41 @@ body {
     transition: color 800ms ease;
 }
 
+.music-release-artwork {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem clamp(1rem, 4vw, 3rem);
+    text-align: center;
+}
+
+.music-release-artwork h3 {
+    margin: 0 0 0.75rem;
+    color: var(--text-color);
+    font-family: "bodoni-std", serif;
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    font-weight: 400;
+    font-style: normal;
+}
+
+.music-release-artwork > img {
+    display: block;
+    width: min(38%, 300px);
+    height: auto;
+    margin: 0 auto;
+}
+
+#demo {
+    margin: 0.75rem 0 0;
+    color: var(--text-color);
+    font-family: "bodoni-std", serif;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.4;
+    text-align: center;
+}
+
 .social-links {
     display: flex;
     align-items: center;
@@ -552,9 +587,51 @@ video {
 }
 
 @media (max-width: 600px) {
+    .social-links {
+        gap: 0.5rem;
+    }
+
+    .social-links a {
+        width: 2rem;
+        height: 2rem;
+    }
+
     .shows-layout {
         grid-template-columns: minmax(0, 1fr) minmax(110px, 34%);
         gap: 1rem;
+    }
+
+    .bandsintown-widget {
+        padding: 0.5rem 0;
+    }
+
+    .bandsintown-event-list {
+        gap: 0.65rem;
+    }
+
+    .bandsintown-event {
+        gap: 0.65rem;
+        padding: 0.8rem 0;
+    }
+
+    .bandsintown-event-details {
+        gap: 0.15rem;
+    }
+
+    .bandsintown-empty-message {
+        margin-bottom: 0.65rem;
+        line-height: 1.35;
+    }
+
+    .bandsintown-follow {
+        min-height: 2.3rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.65rem;
+        padding: 0.45rem 0.85rem;
+    }
+
+    .bandsintown-attribution {
+        margin-top: 0.65rem;
     }
 
     .show-video-column {
