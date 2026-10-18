@@ -272,7 +272,7 @@ body {
 
 .shows-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(150px, 25%, 280px);
+    grid-template-columns: minmax(0, 1fr) clamp(140px, 21%, 240px);
     align-items: stretch;
     gap: clamp(1rem, 4vw, 3rem);
     margin: 0 clamp(1rem, 4vw, 3rem);
@@ -295,24 +295,139 @@ body {
 
 .bandsintown-widget-wrap {
     width: 100%;
-    margin: 1.5rem 0 0;
+    margin: 0rem 0 0;
     overflow: hidden;
     border-radius: 12px;
+    background: transparent;
+    color: #302117;
 }
 
-.bandsintown-status {
-    margin: 1.5rem 0 0 !important;
+.bandsintown-widget {
+    padding: clamp(1rem, 3vw, 1.5rem) 0;
 }
 
-.bandsintown-widget-wrap .bit-play-my-city-wrapper {
-    display: none !important;
+.bandsintown-loading,
+.bandsintown-error,
+.bandsintown-empty-message {
+    margin: 0 0 1rem;
+    color: #302117;
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    line-height: 1.5;
+}
+
+.bandsintown-loading,
+.bandsintown-error {
+    color: #302117;
+    font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+}
+
+.bandsintown-follow {
+    display: inline-flex;
+    min-height: 2.8rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    margin-top:2rem;
+    padding: 0.65rem 1.2rem;
+    border: 1px solid #302117;
+    border-radius: 999px;
+    background: transparent;
+    color: #302117;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+}
+
+.bandsintown-follow:hover {
+    background: rgba(48, 33, 23, 0.08);
+}
+
+.bandsintown-event-list {
+    display: grid;
+    gap: 2rem;
+}
+
+.bandsintown-event {
+    display: grid;
+    grid-template-columns: minmax(4.5rem, auto) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.1rem;
+    min-width: 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(48, 33, 23, 0.38);
+    color: inherit;
+    text-decoration: none;
+}
+
+.bandsintown-event:hover .bandsintown-event-name {
+    text-decoration: underline;
+}
+
+.bandsintown-event-date {
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.bandsintown-event-details {
+    display: grid;
+    min-width: 0;
+    gap: 0.3rem;
+}
+
+.bandsintown-event-name,
+.bandsintown-event-location {
+    overflow-wrap: anywhere;
+}
+
+.bandsintown-event-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.bandsintown-event-location {
+    color: rgba(48, 33, 23, 0.82);
+    font-size: 1rem;
+}
+
+.bandsintown-event-type {
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(48, 33, 23, 0.5);
+    border-radius: 999px;
+    color: #302117;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.bandsintown-event-type:empty {
+    display: none;
+}
+
+.bandsintown-event:focus-visible,
+.bandsintown-follow:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.bandsintown-attribution {
+    display: inline-block;
+    margin-top: 1.25rem;
+    color: rgba(48, 33, 23, 0.75);
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+.bandsintown-attribution:hover {
+    text-decoration: underline;
 }
 
 .show-video-column {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 280px;
+    max-width: 240px;
     margin-left: auto;
 }
 
@@ -438,7 +553,7 @@ video {
 
 @media (max-width: 600px) {
     .shows-layout {
-        grid-template-columns: minmax(0, 1fr) minmax(120px, 38%);
+        grid-template-columns: minmax(0, 1fr) minmax(110px, 34%);
         gap: 1rem;
     }
 
@@ -446,46 +561,27 @@ video {
         max-width: none;
     }
 
-    .bandsintown-widget-wrap .bit-widget,
-    .bandsintown-widget-wrap .bit-follow-section-wrapper,
-    .bandsintown-widget-wrap .bit-nav-bar-container,
-    .bandsintown-widget-wrap .bit-nav-bar,
-    .bandsintown-widget-wrap .bit-event-lists,
-    .bandsintown-widget-wrap .bit-events-container,
-    .bandsintown-widget-wrap .bit-upcoming-events-container,
-    .bandsintown-widget-wrap .bit-past-events {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
+    .bandsintown-event {
+        grid-template-columns: minmax(3.8rem, auto) minmax(0, 1fr);
+        column-gap: 0.65rem;
     }
 
-    .bandsintown-widget-wrap .bit-widget,
-    .bandsintown-widget-wrap .bit-widget * {
-        font-size: clamp(0.72rem, 3.2vw, 0.9rem) !important;
+    .bandsintown-event-date {
+        font-size: 0.82rem;
     }
 
-    .bandsintown-widget-wrap .bit-event,
-    .bandsintown-widget-wrap .bit-details-inner-wrapper {
-        min-width: 0 !important;
+    .bandsintown-event-name {
+        font-size: 1rem;
     }
 
-    .bandsintown-widget-wrap .bit-past-events {
-        position: relative;
-        left: -10px;
+    .bandsintown-event-location {
+        font-size: 0.85rem;
     }
 
-    .bandsintown-widget-wrap .bit-event {
-        width: 100% !important;
-    }
-
-    .bandsintown-widget-wrap .bit-logo-link svg {
-        max-width: 100%;
-        height: auto;
-    }
-
-    .bandsintown-widget-wrap .bit-location-under-mobile,
-    .bandsintown-widget-wrap .bit-venue {
-        overflow-wrap: anywhere;
+    .bandsintown-event-type {
+        grid-column: 2;
+        justify-self: start;
+        font-size: 0.68rem;
     }
 }
 
@@ -547,14 +643,16 @@ img {
 }
 
 .media-credit:hover,
-.media-credit:focus-visible {
+.media-credit:focus-visible,
+.media-credit.is-expanded {
     max-width: 240px;
     padding-right: 14px;
     gap: 8px;
 }
 
 .media-credit:hover .media-credit-label,
-.media-credit:focus-visible .media-credit-label {
+.media-credit:focus-visible .media-credit-label,
+.media-credit.is-expanded .media-credit-label {
     max-width: 180px;
     opacity: 1;
 }

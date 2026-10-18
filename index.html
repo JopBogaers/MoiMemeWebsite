@@ -68,57 +68,147 @@
                 <div class="shows-layout">
                     <div class="shows-copy">
                         <h2>Shows</h2>
-                        <p>Here, you can find information about our upcoming shows.</p>
                         <div class="bandsintown-widget-wrap">
-                            <a id="bandsintown-widget" class="bit-widget-initializer"
-                                data-artist-name="id_15617033"
-                                data-app-id="f502a2e51c6f439dde0aa92f891a631b"
-                                data-background-color="rgba(0,0,0,1)"
-                                data-font="Arial"
-                                data-text-color="rgba(255,255,255,1)"
-                                data-bit-logo-color="rgba(255,255,255,1)"
-                                data-separator-color="rgba(0,0,0,1)"
-                                data-button-label-capitalization="uppercase"
-                                data-location-capitalization="uppercase"
-                                data-venue-capitalization="capitalize"
-                                data-display-limit="5"
-                                data-display-details="false"></a>
+                            <div id="bandsintown-widget" class="bandsintown-widget" aria-live="polite" aria-busy="true">
+                                <p class="bandsintown-loading">Loading shows…</p>
+                            </div>
                         </div>
                         <script>
                             (() => {
                                 const widget = document.getElementById('bandsintown-widget');
                                 const controller = new AbortController();
-                                const timeout = window.setTimeout(() => controller.abort(), 5000);
-                                const query = new URLSearchParams({
-                                    app_id: widget.dataset.appId,
-                                    date: 'upcoming'
-                                });
-                                const eventsUrl = `https://rest.bandsintown.com/artists/${encodeURIComponent(widget.dataset.artistName)}/events?${query}`;
+                                const timeout = window.setTimeout(() => controller.abort(), 8000);
+                                const artistId = '15617033';
+                                const appId = 'f502a2e51c6f439dde0aa92f891a631b';
+                                const artistPage = 'https://www.bandsintown.com/a/15617033-moi-meme';
 
-                                const loadWidget = () => {
+                                const fetchEvents = (period) => new Promise((resolve, reject) => {
+                                    const callbackName = `bandsintownEvents_${period}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
                                     const script = document.createElement('script');
-                                    script.src = 'https://widgetv3.bandsintown.com/main.min.js';
-                                    script.charset = 'utf-8';
-                                    script.async = true;
+                                    const query = new URLSearchParams({
+                                        app_id: appId,
+                                        date: period,
+                                        callback: callbackName
+                                    });
+                                    const cleanup = () => {
+                                        window.clearTimeout(requestTimeout);
+                                        controller.signal.removeEventListener('abort', onAbort);
+                                        delete window[callbackName];
+                                        script.remove();
+                                    };
+                                    const onAbort = () => {
+                                        cleanup();
+                                        reject(new Error('Bandsintown request timed out.'));
+                                    };
+                                    const requestTimeout = window.setTimeout(() => {
+                                        cleanup();
+                                        reject(new Error('Bandsintown request timed out.'));
+                                    }, 8000);
+
+                                    window[callbackName] = (events) => {
+                                        cleanup();
+                                        if (!Array.isArray(events)) {
+                                            reject(new Error('Invalid Bandsintown event response.'));
+                                            return;
+                                        }
+                                        resolve(events);
+                                    };
+                                    script.onerror = () => {
+                                        cleanup();
+                                        reject(new Error('Could not load Bandsintown events.'));
+                                    };
+                                    controller.signal.addEventListener('abort', onAbort, { once: true });
+                                    script.src = `https://rest.bandsintown.com/artists/id_${artistId}/events?${query}`;
                                     document.head.append(script);
+                                });
+
+                                const makeEventCard = (event, isUpcoming) => {
+                                    const link = document.createElement('a');
+                                    link.className = 'bandsintown-event';
+                                    link.href = event.url;
+                                    link.target = '_blank';
+                                    link.rel = 'noopener noreferrer';
+                                    link.setAttribute('aria-label', `${isUpcoming ? 'Upcoming' : 'Past'} show: ${event.venue?.name || event.title || 'Moi-même'}, ${event.venue?.city || ''}`);
+
+                                    const date = new Date(event.datetime);
+                                    const dateLabel = document.createElement('span');
+                                    dateLabel.className = 'bandsintown-event-date';
+                                    dateLabel.textContent = new Intl.DateTimeFormat(undefined, {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric'
+                                    }).format(date);
+
+                                    const details = document.createElement('span');
+                                    details.className = 'bandsintown-event-details';
+                                    const name = document.createElement('span');
+                                    name.className = 'bandsintown-event-name';
+                                    name.textContent = event.title || event.venue?.name || 'Moi-même';
+                                    const location = document.createElement('span');
+                                    location.className = 'bandsintown-event-location';
+                                    location.textContent = [event.venue?.city, event.venue?.country].filter(Boolean).join(', ');
+                                    details.append(name, location);
+
+                                    const type = document.createElement('span');
+                                    type.className = 'bandsintown-event-type';
+                                    type.textContent = isUpcoming ? 'Upcoming' : 'Past';
+                                    link.append(dateLabel, details, type);
+                                    return link;
                                 };
 
-                                fetch(eventsUrl, { signal: controller.signal })
-                                    .then((response) => {
-                                        if (!response.ok) throw new Error('Could not check upcoming shows.');
-                                        return response.json();
+                                const renderShows = (upcoming, past) => {
+                                    widget.replaceChildren();
+                                    const upcomingSorted = upcoming
+                                        .filter((event) => event.url && event.datetime)
+                                        .sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+                                    const pastSorted = past
+                                        .filter((event) => event.url && event.datetime)
+                                        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+                                    const shows = [
+                                        ...upcomingSorted.slice(0, 6).map((event) => ({ event, isUpcoming: true })),
+                                        ...pastSorted.slice(0, Math.max(0, 6 - upcomingSorted.length)).map((event) => ({ event, isUpcoming: false }))
+                                    ];
+
+                                    if (upcomingSorted.length === 0) {
+                                        const notice = document.createElement('p');
+                                        notice.className = 'bandsintown-empty-message';
+                                        notice.textContent = 'Currently, no shows are planned yet. Follow us to stay up-to-date.';
+                                        const follow = document.createElement('a');
+                                        follow.className = 'bandsintown-follow';
+                                        follow.href = artistPage;
+                                        follow.target = '_blank';
+                                        follow.rel = 'noopener noreferrer';
+                                        follow.textContent = 'FOLLOW MOI-MÊME';
+                                        widget.append(notice, follow);
+                                    }
+
+                                    if (shows.length > 0) {
+                                        const list = document.createElement('div');
+                                        list.className = 'bandsintown-event-list';
+                                        shows.forEach(({ event, isUpcoming }) => list.append(makeEventCard(event, isUpcoming)));
+                                        widget.append(list);
+                                    }
+
+                                    const attribution = document.createElement('a');
+                                    attribution.className = 'bandsintown-attribution';
+                                    attribution.href = artistPage;
+                                    attribution.target = '_blank';
+                                    attribution.rel = 'noopener noreferrer';
+                                    attribution.textContent = 'Powered by Bandsintown';
+                                    widget.append(attribution);
+                                };
+
+                                Promise.all([fetchEvents('upcoming'), fetchEvents('past')])
+                                    .then(([upcoming, past]) => renderShows(upcoming, past))
+                                    .catch(() => {
+                                        const error = document.createElement('p');
+                                        error.className = 'bandsintown-error';
+                                        error.textContent = 'Shows are temporarily unavailable. Please check back soon.';
+                                        widget.replaceChildren(error);
                                     })
-                                    .then((events) => {
-                                        if (Array.isArray(events) && events.length === 0) {
-                                            widget.dataset.displayPastDates = 'true';
-                                            widget.dataset.hideUpcomingEvents = 'true';
-                                            document.getElementById('bandsintown-status').hidden = false;
-                                        }
-                                    })
-                                    .catch(() => {})
                                     .finally(() => {
                                         window.clearTimeout(timeout);
-                                        loadWidget();
+                                        widget.setAttribute('aria-busy', 'false');
                                     });
                             })();
                         </script>

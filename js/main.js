@@ -1,6 +1,36 @@
 const navButtons = document.querySelectorAll('.nav-button');
 const sections = document.querySelectorAll('.panel');
 
+const mediaCredits = document.querySelectorAll('.media-credit');
+const supportsTapToExpand = window.matchMedia('(hover: none) and (pointer: coarse)');
+
+mediaCredits.forEach((credit) => {
+    credit.setAttribute('aria-expanded', 'false');
+
+    credit.addEventListener('click', (event) => {
+        if (!supportsTapToExpand.matches) return;
+
+        if (!credit.classList.contains('is-expanded')) {
+            event.preventDefault();
+            mediaCredits.forEach((item) => {
+                item.classList.remove('is-expanded');
+                item.setAttribute('aria-expanded', 'false');
+            });
+            credit.classList.add('is-expanded');
+            credit.setAttribute('aria-expanded', 'true');
+        }
+    });
+});
+
+document.addEventListener('click', (event) => {
+    if (!supportsTapToExpand.matches || event.target.closest('.media-credit')) return;
+
+    mediaCredits.forEach((credit) => {
+        credit.classList.remove('is-expanded');
+        credit.setAttribute('aria-expanded', 'false');
+    });
+});
+
 document.querySelectorAll('.video-audio-toggle').forEach((button) => {
     const video = button.parentElement.querySelector('video');
     if (!video) return;
