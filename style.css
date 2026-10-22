@@ -168,6 +168,10 @@ body {
         max-width: none;
         margin-left: -40%;
     }
+
+    .nav-leaves-wrap {
+        display: none;
+    }
 }
 
 @media (max-width: 380px) {
@@ -303,6 +307,25 @@ body {
     color: var(--text-color);
     text-decoration: underline;
     transition: color 800ms ease;
+}
+
+.contact-details {
+    margin-top: 2rem;
+    color: #888888;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.contact-details > p:first-child {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.contact-kvk {
+    margin-top: 0.25rem !important;
+    color: inherit !important;
+    font-family: inherit;
+    font-size: 0.85rem !important;
+    font-weight: 700;
 }
 
 .shows-layout {
