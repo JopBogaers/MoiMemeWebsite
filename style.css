@@ -19,6 +19,7 @@ body.home-theme {
 }
 
 html {
+    background-color: #000;
     overflow-x: clip;
     scroll-behavior: smooth;
 }
