@@ -22,13 +22,18 @@ html {
     background-color: #000;
     overflow-x: clip;
     scroll-behavior: smooth;
+    transition: background-color 800ms ease;
+}
+
+html.home-theme {
+    background-color: #e9e5d4;
 }
 
 body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background-color: transparent;
+    background-color: var(--page-bg);
     color: var(--text-color);
     font-family: "bodoni-std", sans-serif;
     font-weight: 300;

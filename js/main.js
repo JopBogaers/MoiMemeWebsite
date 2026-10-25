@@ -60,6 +60,7 @@ function updateHomeTheme() {
     const isInHomeTheme = window.scrollY >= getHomeThemeThreshold() - 1;
         //&& window.scrollY < nextSectionTop - 1;
     document.body.classList.toggle('home-theme', isInHomeTheme);
+    document.documentElement.classList.toggle('home-theme', isInHomeTheme);
 }
 
 navButtons.forEach((button) => {
