@@ -44,13 +44,11 @@ document.querySelectorAll('.video-audio-toggle').forEach((button) => {
 });
 
 function getHomeThemeThreshold() {
-    const leaves = document.querySelector('.nav-leaves-wrap');
-    const nav = document.querySelector('.section-nav');
+    const heroImage = document.querySelector('.hero-image');
 
-    if (!leaves || !nav) return 0;
+    if (!heroImage) return 0;
 
-    const leavesTop = window.scrollY + leaves.getBoundingClientRect().top;
-    return Math.max(0, leavesTop - nav.offsetHeight);
+    return Math.max(0, window.scrollY + heroImage.getBoundingClientRect().bottom);
 }
 
 function updateHomeTheme() {
@@ -70,16 +68,10 @@ navButtons.forEach((button) => {
         const targetSection = document.getElementById(targetId);
 
         if (targetId === 'section-1') {
-            const leaves = document.querySelector('.nav-leaves-wrap');
-            const nav = document.querySelector('.section-nav');
-
-            if (leaves && nav) {
-                const leavesTop = window.scrollY + leaves.getBoundingClientRect().top;
-                window.scrollTo({
-                    top: leavesTop - nav.offsetHeight,
-                    behavior: 'smooth'
-                });
-            }
+            window.scrollTo({
+                top: getHomeThemeThreshold(),
+                behavior: 'smooth'
+            });
         } else if (targetSection) {
             targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -111,3 +103,7 @@ sections.forEach((section) => observer.observe(section));
 
 window.addEventListener('scroll', updateHomeTheme, { passive: true });
 window.addEventListener('resize', updateHomeTheme);
+
+const heroImage = document.querySelector('.hero-image');
+heroImage?.addEventListener('load', updateHomeTheme);
+updateHomeTheme();
